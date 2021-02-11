@@ -1,0 +1,77 @@
+<pre>--- Summary ---
+Tests passed: 0 out of 18
+
+--- Details ---
+Test #0: failed 
+Description: Test Case 01: Deterministic Tree (group: DTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #1: failed 
+Description: Test Case 02: Deterministic Tree (group: DTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #2: failed 
+Description: Test Case 03: Deterministic Tree (group: DTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #3: failed 
+Description: Test Case 04: Deterministic Tree (group: DTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #4: failed 
+Description: Test Case 01: Random Tree (group: RTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #5: failed 
+Description: Test Case 02: Random Tree (group: RTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #6: failed 
+Description: Test Case 03: Random Tree (group: RTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #7: failed 
+Description: Test Case 04: Random Tree (group: RTLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #8: failed 
+Description: Test Case 01: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #9: failed 
+Description: Test Case 02: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #10: failed 
+Description: Test Case 03: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #11: failed 
+Description: Test Case 04: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #12: failed 
+Description: Test Case 05: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #13: failed 
+Description: Test Case 06: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #14: failed 
+Description: Test Case 07: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #15: failed 
+Description: Test Case 08: Bagging (group: BagLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #16: failed 
+Description: InsaneLearner Test Case (group: InsaneLearner)
+ModuleNotFoundError: No module named 'RTLearner'
+
+Test #17: failed 
+Description: Random Classname Test Case (group: RandomName)
+ModuleNotFoundError: No module named 'RTLearner'
+
+</pre>
