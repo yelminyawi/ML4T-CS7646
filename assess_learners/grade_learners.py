@@ -71,7 +71,7 @@ learning_test_cases = [
     LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         description="Test Case 01: Deterministic Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         group="DTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        datafile="Istanbul.csv",
         seed=1481090001,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -251,7 +251,7 @@ def test_learners(description, group, datafile, seed, outputs, grader):
     points_earned = 0.0  # initialize points for this test case  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     try:  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         learner_class = None  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        kwargs = {"verbose": False}  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        kwargs = {"verbose": True}
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         # (BPH) Copied from grade_strategy_qlearning.py  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         # Set fixed seed for repetability  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			

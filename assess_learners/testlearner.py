@@ -28,17 +28,18 @@ import sys
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 import numpy as np  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-import LinRegLearner as lrl  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+import LinRegLearner as lrl
+import DTLearner as dtl
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 if __name__ == "__main__":  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     if len(sys.argv) != 2:  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         print("Usage: python testlearner.py <filename>")  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         sys.exit(1)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    inf = open(sys.argv[1])  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    inf = open(sys.argv[1])
     data = np.array(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        [list(map(float, s.strip().split(","))) for s in inf.readlines()]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        [list(map(float, s.strip().split(","))) for s in inf.readlines()]
     )  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
     # compute how much of the data is training and testing  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     train_rows = int(0.6 * data.shape[0])  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     test_rows = data.shape[0] - train_rows  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -53,7 +54,8 @@ if __name__ == "__main__":
     print(f"{test_y.shape}")  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     # create a learner and train it  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    learner = lrl.LinRegLearner(verbose=True)  # create a LinRegLearner  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    #learner = lrl.LinRegLearner(verbose=True)  # create a LinRegLearner
+    learner = dtl.DTLearner(verbose=True)  # create a LinRegLearner
     learner.add_evidence(train_x, train_y)  # train it  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     print(learner.author())  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
