@@ -1,27 +1,15 @@
 <pre>--- Summary ---
-Tests passed: 4 out of 18
+Tests passed: 8 out of 18
 
 --- Details ---
 Test #0: passed 
 Test #1: passed 
 Test #2: passed 
 Test #3: passed 
-Test #4: failed 
-Description: Test Case 01: Random Tree (group: RTLearner)
-IndexError: index 635 is out of bounds for axis 0 with size 633
-
-Test #5: failed 
-Description: Test Case 02: Random Tree (group: RTLearner)
-IndexError: index 643 is out of bounds for axis 0 with size 641
-
-Test #6: failed 
-Description: Test Case 03: Random Tree (group: RTLearner)
-IndexError: index 633 is out of bounds for axis 0 with size 631
-
-Test #7: failed 
-Description: Test Case 04: Random Tree (group: RTLearner)
-IndexError: index 641 is out of bounds for axis 0 with size 639
-
+Test #4: passed 
+Test #5: passed 
+Test #6: passed 
+Test #7: passed 
 Test #8: failed 
 Description: Test Case 01: Bagging (group: BagLearner)
 ModuleNotFoundError: No module named 'BagLearner'

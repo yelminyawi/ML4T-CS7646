@@ -20,17 +20,14 @@ class DTLearner:
         data = np.atleast_2d(d)
         if data.shape[0] == 1:
             leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
-            #print('leaf1: ', leaf.shape)
             return leaf
         if self.same_y(data):
             leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
-            #print('leaf2: ', leaf.shape)
             return leaf
         # implement pruning here using leaf size attribute
         if data.shape[0] <= self.leaf_size:
             y = np.mean(data[:, -1])
             leaf = np.array([[np.NAN, y, np.NAN, np.NAN]])
-            #print('leaf3: ', leaf.shape)
             return leaf
         else:
             # find idx and split val for best correlated column
@@ -39,7 +36,6 @@ class DTLearner:
             if i == -1:
                 y = np.mean(data[:, -1])
                 leaf = np.array([[np.NAN, y, np.NAN, np.NAN]])
-                #print("Leaf4: ", leaf.shape)
                 return leaf
             # recursively build tree
             lefttree = self.build_tree(data[data[:, i] <= SplitVal])

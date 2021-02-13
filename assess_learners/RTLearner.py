@@ -3,7 +3,7 @@ import numpy as np
 
 
 class RTLearner:
-    def __init__(self, leaf_size=1, verbose=False):
+    def __init__(self, leaf_size=1, verbose=True):
         self.leaf_size = leaf_size
         self.verbose = verbose
         # this is based on the tabular view layout of [node, factor, splitval, left, right]
@@ -18,28 +18,60 @@ class RTLearner:
     def build_tree(self, d) -> np.ndarray:
         # standardize data so that shape[0] will always work
         data = np.atleast_2d(d)
-        if data.shape[0] <= 1:
-            return np.array([np.NAN, data[-1][-1], np.NAN, np.NAN])
+        if data.shape[0] == 1:
+            leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
+            return leaf
         if self.same_y(data):
-            return np.array([np.NAN, data[:, -1][0], np.NAN, np.NAN])
+            leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
+            return leaf
         # implement pruning here using leaf size attribute
         if data.shape[0] <= self.leaf_size:
             y = np.mean(data[:, -1])
-            return np.array([np.NAN, y, np.NAN, np.NAN])
+            leaf = np.array([[np.NAN, y, np.NAN, np.NAN]])
+            return leaf
         else:
-            # get the index of the highest correlated column
-            i = self.best_col_corr(data)
-            SplitVal = np.median(data[:, i])
-            # create a leaf out of remaining data when no split occurs
-            if self.no_split(data, i, SplitVal):
+            # find idx and split val for best correlated column
+            i, SplitVal = self.find_best_split(data)
+            # create a leaf when no split is possible
+            if i == -1:
                 y = np.mean(data[:, -1])
-                return np.array([np.NAN, y, np.NAN, np.NAN])
+                leaf = np.array([[np.NAN, y, np.NAN, np.NAN]])
+                return leaf
             # recursively build tree
             lefttree = self.build_tree(data[data[:, i] <= SplitVal])
             righttree = self.build_tree(data[data[:, i] > SplitVal])
             # each node is technically a tree so return the stacked arrays
-            root = np.array([i, SplitVal, 1, lefttree.shape[0] + 1])
+            root = np.array([[i, SplitVal, 1, lefttree.shape[0] + 1]])
             return np.vstack((root, lefttree, righttree))
+
+    # determine if valid split is possible and return idx and split value
+    # helper functions - rand_col, no_split
+    def find_best_split(self, d) -> tuple:
+        # make a deep copy of the input array
+        data = np.empty_like(d)
+        data[:] = d
+        # find the initial best index
+        i = self.rand_col(data)
+        SplitVal = np.median(data[:, i])
+        omit_cols = []
+        # add columns to omit when searching for labels to split on until a valid split occurs
+        # shape of columns has to be greater than 1 since y data is included
+        while self.no_split(data, i, SplitVal) and (data.shape[1] - len(omit_cols)) > 1:
+            omit_cols.append(i)
+            i = self.rand_col(data, omit_cols)
+            SplitVal = np.median(data[:, i])
+        if (data.shape[1] - len(omit_cols)) == 1:
+            return -1, None
+        return i, SplitVal
+
+    def rand_col(self, data, omit_cols=[]) ->int:
+        # the last column is not an option because it is my y column
+        max_num = data.shape[1] - 2
+        min_num = 0
+        i = np.random.randint(low=min_num, high=max_num)
+        while i in omit_cols:
+            i = np.random.randint(low=min_num, high=max_num)
+        return i
 
     # check if the median of data is able to split data adequately
     def no_split(self, data, i, SplitVal) -> bool:
@@ -51,18 +83,6 @@ class RTLearner:
     def same_y(self, data) -> bool:
         y = data[:, -1]
         return np.max(y) == np.min(y)
-
-    # find the index for the label with highest correlation to y
-    def best_col_corr(self, data) -> int:
-        best_correlation = -10000
-        best_idx = -1
-        transpose = data.T
-        for col in range(transpose.shape[0] - 1):
-            correlation = abs(np.corrcoef(transpose[col], y=data[:, -1]))
-            if correlation[0][1] > best_correlation:
-                best_correlation = correlation[0][1]
-                best_idx = col
-        return int(best_idx)
 
     # check if the branch is a leaf
     def is_leaf(self, arr) -> bool:
@@ -87,6 +107,7 @@ class RTLearner:
     # helper functions - is_leaf, next_is_right, relative_right_idx
     def search_tree(self, x_row_arr) -> float:
         # begin search at the root node
+        max_row = self.tree.shape[0]
         idx = 0
         current_node = self.tree[idx]
         # search through tree until a leaf is found
@@ -96,6 +117,8 @@ class RTLearner:
                 idx += self.relative_right_idx(current_node)
             else:
                 idx += 1
+            if idx >= max_row:
+                break
             current_node = self.tree[idx]
         return current_node[1]
 
@@ -103,8 +126,10 @@ class RTLearner:
     # helper functions - build_tree
     def add_evidence(self, x, y) -> None:
         # converting this to the form used in lecture to build the tree
-        data = np.column_stack((y, x))
+        data = np.column_stack((x, y))
         self.tree = self.build_tree(data)
+        #print(self.tree)
+
 
     # find y values associated with instances of x feature data
     def query(self, x) -> np.ndarray:
