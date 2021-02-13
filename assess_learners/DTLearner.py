@@ -131,6 +131,7 @@ class DTLearner:
         # converting this to the form used in lecture to build the tree
         data = np.column_stack((x, y))
         self.tree = self.build_tree(data)
+
         #print(self.tree)
 
 

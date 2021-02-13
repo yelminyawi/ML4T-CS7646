@@ -12,35 +12,35 @@ Test #6: passed
 Test #7: passed 
 Test #8: failed 
 Description: Test Case 01: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #9: failed 
 Description: Test Case 02: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #10: failed 
 Description: Test Case 03: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #11: failed 
 Description: Test Case 04: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #12: failed 
 Description: Test Case 05: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #13: failed 
 Description: Test Case 06: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #14: failed 
 Description: Test Case 07: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #15: failed 
 Description: Test Case 08: Bagging (group: BagLearner)
-TimeoutException: Exceeded time limit!
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1 and the array at index 1 has size 215
 
 Test #16: failed 
 Description: InsaneLearner Test Case (group: InsaneLearner)

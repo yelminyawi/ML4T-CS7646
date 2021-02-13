@@ -37,6 +37,7 @@ class BagLearner:
         for i in range(self.bags):
             x_sample, y_sample = self.randomly_sample(data, n_prime)
             L = self.learner(**self.kwargs)
+            #L.wow = "hello"
             L.add_evidence(x_sample, y_sample)
             self.bag_list.append(L)
         print("-----------------------------------------Evidence Time---------------------------------   ", time.time() - st)

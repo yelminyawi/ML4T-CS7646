@@ -6,9 +6,9 @@ class RTLearner:
     def __init__(self, leaf_size=1, verbose=True):
         self.leaf_size = leaf_size
         self.verbose = verbose
+        self.wow = ''
         # this is based on the tabular view layout of [node, factor, splitval, left, right]
         self.tree = np.empty((0, 4), dtype=float)
-        pass
 
     def author(self) -> str:
         return 'nriojas3'
@@ -33,7 +33,7 @@ class RTLearner:
             # find idx and split val for best correlated column
             i, SplitVal = self.find_best_split(data)
             # create a leaf when no split is possible
-            if i == -1:
+            if self.no_split(data, i, SplitVal):
                 y = np.mean(data[:, -1])
                 leaf = np.array([[np.NAN, y, np.NAN, np.NAN]])
                 return leaf
@@ -50,18 +50,28 @@ class RTLearner:
         # make a deep copy of the input array
         data = np.empty_like(d)
         data[:] = d
+
+
+
         # find the initial best index
-        i = self.rand_col(data)
+        i = np.random.randint(data.shape[1] - 2)
         SplitVal = np.median(data[:, i])
-        omit_cols = []
-        # add columns to omit when searching for labels to split on until a valid split occurs
-        # shape of columns has to be greater than 1 since y data is included
-        while self.no_split(data, i, SplitVal) and (data.shape[1] - len(omit_cols)) > 1:
-            omit_cols.append(i)
-            i = self.rand_col(data, omit_cols)
-            SplitVal = np.median(data[:, i])
-        if (data.shape[1] - len(omit_cols)) == 1:
-            return -1, None
+        # omit_cols = []
+        # a = 0
+        # # add columns to omit when searching for labels to split on until a valid split occurs
+        # # shape of columns has to be greater than 1 since y data is included
+        # while self.no_split(data, i, SplitVal) and (data.shape[1] - len(omit_cols)) > 0:
+        #     if i not in omit_cols:
+        #         omit_cols.append(i)
+        #     i = self.rand_col(data, omit_cols)
+        #     SplitVal = np.median(data[:, i])
+        #     a += 1
+        # if self.wow == 'hello' and data.shape == (3, 9):
+        #     print("In the find best split loop ", self.leaf_size, a)
+        #     print(pd.DataFrame(data))
+        #     print("--------------------------")
+        # if (data.shape[1] - len(omit_cols)) == 1:
+        #     return -1, None
         return i, SplitVal
 
     def rand_col(self, data, omit_cols=[]) ->int:
@@ -126,8 +136,10 @@ class RTLearner:
     # helper functions - build_tree
     def add_evidence(self, x, y) -> None:
         # converting this to the form used in lecture to build the tree
+
         data = np.column_stack((x, y))
         self.tree = self.build_tree(data)
+
         #print(self.tree)
 
 
