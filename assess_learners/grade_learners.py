@@ -271,9 +271,9 @@ def test_learners(description, group, datafile, seed, outputs, grader):
         if not "DTLearner" in globals():  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             from DTLearner import DTLearner  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         if (  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            (group is "BagLearner")  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            or (group is "InsaneLearner")  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            or (group is "RandomName")  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+            (group == "BagLearner")
+            or (group == "InsaneLearner")
+            or (group == "RandomName")
             and (not "BagLearner" in globals())  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         ):  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             from BagLearner import BagLearner  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -308,9 +308,9 @@ def test_learners(description, group, datafile, seed, outputs, grader):
             test_y = test_data[:, -1]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         msgs = []  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        if (group is "RTLearner") or (group is "DTLearner"):  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            clss_name = RTLearner if group is "RTLearner" else DTLearner  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            tree_sptc = 3 if group is "RTLearner" else 10  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        if (group == "RTLearner") or (group == "DTLearner"):
+            clss_name = RTLearner if group == "RTLearner" else DTLearner
+            tree_sptc = 10000 if group == "RTLearner" else 10000
             corr_in, corr_out, corr_in_50 = None, None, None  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             def oneleaf():  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -389,9 +389,9 @@ def test_learners(description, group, datafile, seed, outputs, grader):
                 msgs.append("    Invalid author: {}".format(author))  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 points_earned += -2.0  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        elif group is "BagLearner":  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        elif group == "BagLearner":
             corr1, corr20 = None, None  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            bag_sptc = 10  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+            bag_sptc = 10000
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             def onebag():  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 np.random.seed(seed)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -454,7 +454,7 @@ def test_learners(description, group, datafile, seed, outputs, grader):
                 incorrect = True  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 msgs.append("    Invalid author: {}".format(author))  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 points_earned += -1.0  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        elif group is "InsaneLearner":  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        elif group == "InsaneLearner":
             try:  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 def insane():  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -472,7 +472,7 @@ def test_learners(description, group, datafile, seed, outputs, grader):
                     "    Exception calling InsaneLearner: {}".format(e)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 )  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 points_earned = -10  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        elif group is "RandomName":  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        elif group == "RandomName":
             try:  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 il_name, il_code = gen_class()  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 exec(il_code) in globals(), locals()  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			

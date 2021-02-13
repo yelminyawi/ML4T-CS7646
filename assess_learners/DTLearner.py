@@ -18,9 +18,9 @@ class DTLearner:
     def build_tree(self, d) -> np.ndarray:
         # standardize data so that shape[0] will always work
         data = np.atleast_2d(d)
-        if data.shape[0] == 1:
-            leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
-            return leaf
+        # if data.shape[0] == 1:
+        #     leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
+        #     return leaf
         if self.same_y(data):
             leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
             return leaf
