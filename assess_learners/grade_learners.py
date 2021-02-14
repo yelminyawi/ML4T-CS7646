@@ -68,97 +68,97 @@ learning_test_cases = [
     ########################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     # DTLearner test cases #  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     ########################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 01: Deterministic Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="DTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    LearningTestCase(
+        description="Test Case 01: Deterministic Tree",
+        group="DTLearner",
         datafile="Istanbul.csv",
-        seed=1481090001,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 02: Deterministic Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="DTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090002,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 03: Deterministic Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="DTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090003,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 04: Deterministic Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="DTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090004,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ########################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    # RTLearner test cases #  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ########################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 01: Random Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="RTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090001,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 02: Random Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="RTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090002,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 03: Random Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="RTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090003,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 04: Random Tree",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="RTLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090004,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_min=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            outsample_corr_min=0.15,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            insample_corr_max=0.95,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        seed=1481090001,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 02: Deterministic Tree",
+        group="DTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090002,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 03: Deterministic Tree",
+        group="DTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090003,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 04: Deterministic Tree",
+        group="DTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090004,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    ########################
+    # RTLearner test cases #
+    ########################
+    LearningTestCase(
+        description="Test Case 01: Random Tree",
+        group="RTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090001,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 02: Random Tree",
+        group="RTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090002,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 03: Random Tree",
+        group="RTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090003,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
+    LearningTestCase(
+        description="Test Case 04: Random Tree",
+        group="RTLearner",
+        datafile="Istanbul.csv",
+        seed=1481090004,
+        outputs=dict(
+            insample_corr_min=0.95,
+            outsample_corr_min=0.15,
+            insample_corr_max=0.95,
+        ),
+    ),
     ######################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     # Bagging test cases #  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     ######################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -168,73 +168,73 @@ learning_test_cases = [
         datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         seed=1481090001,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 02: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090002,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 03: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090003,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 04: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090004,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 05: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090005,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 06: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090006,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 07: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090007,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Test Case 08: Bagging",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="BagLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="Istanbul.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090008,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+     ),
+    LearningTestCase(
+        description="Test Case 02: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090002,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 03: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090003,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 04: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090004,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 05: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090005,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 06: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090006,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 07: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090007,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Test Case 08: Bagging",
+        group="BagLearner",
+        datafile="Istanbul.csv",
+        seed=1481090008,
+        outputs=None,
+    ),
     ##############################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     # RandomName + InsaneLearner #  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     ##############################  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="InsaneLearner Test Case",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="InsaneLearner",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="simple.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1498076428,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    LearningTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="Random Classname Test Case",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        group="RandomName",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        datafile="simple.csv",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1498076428,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outputs=None,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    LearningTestCase(
+        description="InsaneLearner Test Case",
+        group="InsaneLearner",
+        datafile="simple.csv",
+        seed=1498076428,
+        outputs=None,
+    ),
+    LearningTestCase(
+        description="Random Classname Test Case",
+        group="RandomName",
+        datafile="simple.csv",
+        seed=1498076428,
+        outputs=None,
+    ),
 ]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -430,13 +430,13 @@ def test_learners(description, group, datafile, seed, outputs, grader):
                 random.seed = tmp_random_seed  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
                 return q_rv  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            pred_y_1, author = run_with_timeout(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-                onebag, bag_sptc, pos_args=(), keyword_args={}  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            )  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+            pred_y_1, author = run_with_timeout(
+                onebag, bag_sptc, pos_args=(), keyword_args={}
+            )
             pred_y_20 = run_with_timeout(twentybags, bag_sptc, (), {})  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            corr1 = np.corrcoef(pred_y_1, test_y)[0, 1]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            corr20 = np.corrcoef(pred_y_20, test_y)[0, 1]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+            corr1 = np.corrcoef(pred_y_1, test_y)[0, 1]
+            corr20 = np.corrcoef(pred_y_20, test_y)[0, 1]
             incorrect = False  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             # msgs = []  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             if corr20 <= corr1:  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			

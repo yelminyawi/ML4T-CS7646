@@ -13,6 +13,7 @@ class InsaneLearner:
             learners.add_evidence(x, y)
     def query(self, x) -> np.ndarray:
         for learners in self.L:
-            y_i = learners.query(x)
-            self.y = y_i if self.y is None else self.y = np.column_stack((self.y, y_i))
+            y_i = learners.query(x.T)
+            if self.y is None: self.y = y_i
+            else: self.y = np.column_stack((self.y, y_i))
         return np.mean(np.atleast_2d(self.y), axis=1)

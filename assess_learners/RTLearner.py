@@ -18,9 +18,9 @@ class RTLearner:
     def build_tree(self, d) -> np.ndarray:
         # standardize data so that shape[0] will always work
         data = np.atleast_2d(d)
-        if data.shape[0] == 1:
-            leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
-            return leaf
+        # if data.shape[0] == 1:
+        #     leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
+        #     return leaf
         if self.same_y(data):
             leaf = np.array([[np.NAN, data[0][-1], np.NAN, np.NAN]])
             return leaf
@@ -44,34 +44,16 @@ class RTLearner:
             root = np.array([[i, SplitVal, 1, lefttree.shape[0] + 1]])
             return np.vstack((root, lefttree, righttree))
 
-    # determine if valid split is possible and return idx and split value
+    # randomly select a column to make a split on, viability of the split check is not done
+    # like it was for DT learner
     # helper functions - rand_col, no_split
     def find_best_split(self, d) -> tuple:
         # make a deep copy of the input array
         data = np.empty_like(d)
         data[:] = d
-
-
-
         # find the initial best index
         i = np.random.randint(data.shape[1] - 2)
         SplitVal = np.median(data[:, i])
-        # omit_cols = []
-        # a = 0
-        # # add columns to omit when searching for labels to split on until a valid split occurs
-        # # shape of columns has to be greater than 1 since y data is included
-        # while self.no_split(data, i, SplitVal) and (data.shape[1] - len(omit_cols)) > 0:
-        #     if i not in omit_cols:
-        #         omit_cols.append(i)
-        #     i = self.rand_col(data, omit_cols)
-        #     SplitVal = np.median(data[:, i])
-        #     a += 1
-        # if self.wow == 'hello' and data.shape == (3, 9):
-        #     print("In the find best split loop ", self.leaf_size, a)
-        #     print(pd.DataFrame(data))
-        #     print("--------------------------")
-        # if (data.shape[1] - len(omit_cols)) == 1:
-        #     return -1, None
         return i, SplitVal
 
     def rand_col(self, data, omit_cols=[]) ->int:
@@ -136,12 +118,8 @@ class RTLearner:
     # helper functions - build_tree
     def add_evidence(self, x, y) -> None:
         # converting this to the form used in lecture to build the tree
-
         data = np.column_stack((x, y))
         self.tree = self.build_tree(data)
-
-        #print(self.tree)
-
 
     # find y values associated with instances of x feature data
     def query(self, x) -> np.ndarray:

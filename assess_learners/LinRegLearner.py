@@ -74,7 +74,7 @@ class LinRegLearner(object):
         :type points: numpy.ndarray  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         :return: The predicted result of the input data according to the trained model  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         :rtype: numpy.ndarray  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+        """
         return (self.model_coefs[:-1] * points).sum(axis=1) + self.model_coefs[  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
             -1  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         ]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			

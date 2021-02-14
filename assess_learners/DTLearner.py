@@ -132,9 +132,6 @@ class DTLearner:
         data = np.column_stack((x, y))
         self.tree = self.build_tree(data)
 
-        #print(self.tree)
-
-
     # find y values associated with instances of x feature data
     def query(self, x) -> np.ndarray:
         y = np.empty(0)
