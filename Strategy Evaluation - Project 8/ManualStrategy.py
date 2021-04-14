@@ -13,7 +13,18 @@ def author():
     return 'nriojas3'
 
 
-def testPolicy(symbol="AAPL", sd=dt.datetime(2010, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000):
+def generate_ema_signal(df, ema):
+    dfCopy = df.copy()
+    dfCopy[ema > df] = 1
+    dfCopy[ema < df] = -1
+    dfCopy[ema == df] = 0
+    return dfCopy
+
+
+# dates in sample (2008, 1, 1) to (2009, 12, 31)
+# dates out of sample (2010, 1, 1) to (2011, 12, 31)
+# testing stock symbols AAPL, SINE_FAST_NOISE, ML4T-220, UNH, JPL
+def testPolicy(symbol="AAPL", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000):
     # dates = pd.date_range(start_date, end_date)
     # df = get_data([stock], dates, True, colname='Adj Close').drop(columns=['SPY'])
     # df_norm = df / df.iloc[0, :]
@@ -29,25 +40,52 @@ def testPolicy(symbol="AAPL", sd=dt.datetime(2010, 1, 1), ed=dt.datetime(2011, 1
     commission = 9.95
     impact = 0.005
     lookback = 10
+    max_position = 1000
     # ------------------------------- Create dataframe ---------------------------
     dates = pd.date_range(sd, ed)
     dfStockPrice = get_data([symbol], dates, True, colname='Adj Close').drop(columns=['SPY'])
     dfStockPrice.sort_index()
     # Is this needed?
-    # dfStockPrice = dfStockPrice.ffill().bfill()
+    dfStockPrice = dfStockPrice.ffill().bfill()
     dfStockPriceNorm = dfStockPrice / dfStockPrice.iloc[0, :]
     dates = dfStockPriceNorm.index
+    orders = pd.DataFrame(0, index=dates, columns=['order type', 'position', 'actual shares'])
     # ------------------------------- Get indicators  ---------------------------
     std = ind.calculate_std(dfStockPriceNorm, lookback)
     sma = ind.calculate_sma(dfStockPriceNorm, lookback)
     momentum = ind.calculate_momentum(dfStockPriceNorm, lookback)
     ema = ind.calculate_ema(dfStockPriceNorm, lookback)
+    ema_ind = generate_ema_signal(dfStockPriceNorm, ema)
     bbp, top_band, bottom_band = ind.calculate_BB_data(dfStockPriceNorm, lookback, sma, std)
-    for day in range(len(dates)):
-        pass
-
-
-    return
+    current_holdings = 0
+    for index, row in dfStockPriceNorm.iterrows():
+        m = momentum.loc[index][0]
+        bb = bbp.loc[index][0]
+        e = ema_ind.loc[index][0]
+        if e > 0 and bb < 0.2 and m < -0.05 and current_holdings < max_position:
+            current_holdings = 1000
+            orders.loc[index]['order type'] = 'buy'
+            if current_holdings == 0:
+                orders.loc[index]['position'] = 1000
+                orders.loc[index]['actual shares'] = 1000
+            else:
+                orders.loc[index]['position'] = 2000
+                orders.loc[index]['actual shares'] = 2000
+        elif e < 0 and bb > 0.8 and m > 0.05 and current_holdings > -max_position:
+            current_holdings = -1000
+            orders.loc[index]['order type'] = 'sell'
+            if current_holdings == 0:
+                orders.loc[index]['position'] = 1000
+                orders.loc[index]['actual shares'] = -1000
+            else:
+                orders.loc[index]['position'] = 2000
+                orders.loc[index]['actual shares'] = -2000
+    # for index, row in orders.iterrows():
+    #     print(row)
+    orders_df = orders.copy().drop(columns=['order type', 'position'])
+    manual = ms.compute_portvals(orders_df, sd, ed, symbol, sv, commission, impact)
+    # generate_plot(manual, manual)
+    return manual
 
 
 def normalize_df(df):
@@ -70,25 +108,54 @@ def generate_plot(optimal, benchmark):
     plt.savefig("optimal.png")
 
 
-def get_benchmark(symbol='JPM', sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2009, 12, 31), sv=100000,
+def get_benchmark(symbol='AAPL', sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000,
                   position=1000, commission=9.95, impact=0.005):
     # commission, impact = 0, 0
     dates = pd.date_range(sd, ed)
     dfPrice = get_data([symbol], dates, True, colname='Adj Close').drop(columns=['SPY'])
     dfPrice.sort_index()
-    dfTrades = dfPrice.copy()
-    dfTrades = ((dfTrades.shift(-1) - dfTrades) / abs(dfTrades.shift(-1) - dfTrades) * 1000).fillna(0)
-    dfTradesPast = (dfTrades.shift(1)).fillna(0)
-    optimized_orders = dfTrades - dfTradesPast
-    benchmark_orders = optimized_orders * 0
+    benchmark_orders = dfPrice * 0
     benchmark_orders.iloc[0][0] = position
     benchmark_portfolio = ms.compute_portvals(benchmark_orders, sd, ed, symbol, sv, commission, impact)
-    generate_plot(benchmark_portfolio, benchmark_portfolio)
+    # generate_plot(benchmark_portfolio, benchmark_portfolio)
+    return benchmark_portfolio
+
+
+def cumulative_return(df):
+    last = df.iloc[-1][0]
+    first = df.iloc[0][0]
+    return (last / first) - 1
+
+
+def daily_returns(df):
+    return df.pct_change(1)
+
+
+def analyze_portfolios(p1, p2):
+    c1 = cumulative_return(normalize_df(p1))
+    c2 = cumulative_return(normalize_df(p2))
+    print('cumulative return')
+    print("portfolio 1: ", c1, " portfolio 2:", c2)
+
+    d1 = daily_returns(normalize_df(p1))
+    d2 = daily_returns(normalize_df(p2))
+    std1 = d1.std()
+    std2 = d2.std()
+    print('standard deviation')
+    print("portfolio 1: ", std1[0], " portfolio 2:", std2[0])
+    m1 = d1.mean()
+    m2 = d2.mean()
+    print('mean')
+    print("portfolio 1: ", m1[0], " portfolio 2:", m2[0])
+
 
 def run():
     get_benchmark()
+
+# testing stock symbols AAPL, SINE_FAST_NOISE, ML4T-220, UNH, JPL
 if __name__ == "__main__":
-    get_benchmark()
-
-
-
+    symbol = "UNH"
+    m = testPolicy(symbol=symbol)
+    b = get_benchmark(symbol=symbol)
+    generate_plot(m, b)
+    analyze_portfolios(m, b)
