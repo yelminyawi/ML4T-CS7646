@@ -1,111 +1,107 @@
 import marketsim as ms
 import indicators as ind
 from util import get_data, plot_data
-
+import time
 import datetime as dt
 import numpy as np
 import pandas as pd
 import copy
 import matplotlib.pyplot as plt
 
-
+# to optimize everything at once
 def author():
     return 'nriojas3'
 
-
-def generate_ema_signal(df, ema):
-    dfCopy = df.copy()
-    dfCopy[ema > df] = 1
-    dfCopy[ema < df] = -1
-    dfCopy[ema == df] = 0
-    return dfCopy
-
-
-# dates in sample (2008, 1, 1) to (2009, 12, 31)
-# dates out of sample (2010, 1, 1) to (2011, 12, 31)
-# testing stock symbols AAPL, SINE_FAST_NOISE, ML4T-220, UNH, JPL
 def testPolicy(symbol="AAPL", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000):
-    # dates = pd.date_range(start_date, end_date)
-    # df = get_data([stock], dates, True, colname='Adj Close').drop(columns=['SPY'])
-    # df_norm = df / df.iloc[0, :]
-    #
-    # # generate dataframes from technical indicators
-    # std = calculate_std(df_norm, lookback)
-    # sma = calculate_sma(df_norm, lookback)
-    # price_per_sma = calculate_price_per_sma(df_norm, sma)
-    # momentum = calculate_momentum(df_norm, lookback)
-    # ema = calculate_ema(df_norm, lookback)
-    # bbp, top_band, bottom_band = calculate_BB_data(df_norm, lookback, sma, std)
     # ------------------------------- Place constants here ---------------------------
-    commission = 9.95
-    impact = 0.005
-    lookback = 10
+    commission = 9.95  # specified on project page
+    impact = 0.005  # specified on project page
     max_position = 1000
+    look_back = 14
+    s_opt = .95
+    bb_opt = .35  # correlates to top BB greater than 0.85 and bottom less than 0.15
+    m_opt = .15
     # ------------------------------- Create dataframe ---------------------------
     dates = pd.date_range(sd, ed)
     dfStockPrice = get_data([symbol], dates, True, colname='Adj Close').drop(columns=['SPY'])
     dfStockPrice.sort_index()
-    # Is this needed?
     dfStockPrice = dfStockPrice.ffill().bfill()
     dfStockPriceNorm = dfStockPrice / dfStockPrice.iloc[0, :]
     dates = dfStockPriceNorm.index
-    orders = pd.DataFrame(0, index=dates, columns=['order type', 'position', 'actual shares'])
+    orders = pd.DataFrame(0, index=dates, columns=['order type', 'position', symbol])
     # ------------------------------- Get indicators  ---------------------------
-    std = ind.calculate_std(dfStockPriceNorm, lookback)
-    sma = ind.calculate_sma(dfStockPriceNorm, lookback)
-    momentum = ind.calculate_momentum(dfStockPriceNorm, lookback)
-    ema = ind.calculate_ema(dfStockPriceNorm, lookback)
-    ema_ind = generate_ema_signal(dfStockPriceNorm, ema)
-    bbp, top_band, bottom_band = ind.calculate_BB_data(dfStockPriceNorm, lookback, sma, std)
+    std = ind.calculate_std(dfStockPriceNorm, look_back)
+    sma = ind.calculate_sma(dfStockPriceNorm, look_back)
+    pp_sma = ind.calculate_price_per_sma(dfStockPriceNorm, sma)
+    momentum = ind.calculate_momentum(dfStockPriceNorm, look_back)
+    bbp, top_band, bottom_band = ind.calculate_BB_data(dfStockPriceNorm, look_back, sma, std)
     current_holdings = 0
+    i = 1
+    # ------------------------------- Implement strategy -------------------------
     for index, row in dfStockPriceNorm.iterrows():
+        # get indicators at specific day
         m = momentum.loc[index][0]
         bb = bbp.loc[index][0]
-        e = ema_ind.loc[index][0]
-        if e > 0 and bb < 0.2 and m < -0.05 and current_holdings < max_position:
-            current_holdings = 1000
-            orders.loc[index]['order type'] = 'buy'
-            if current_holdings == 0:
-                orders.loc[index]['position'] = 1000
-                orders.loc[index]['actual shares'] = 1000
-            else:
-                orders.loc[index]['position'] = 2000
-                orders.loc[index]['actual shares'] = 2000
-        elif e < 0 and bb > 0.8 and m > 0.05 and current_holdings > -max_position:
-            current_holdings = -1000
-            orders.loc[index]['order type'] = 'sell'
-            if current_holdings == 0:
-                orders.loc[index]['position'] = 1000
-                orders.loc[index]['actual shares'] = -1000
-            else:
-                orders.loc[index]['position'] = 2000
-                orders.loc[index]['actual shares'] = -2000
-    # for index, row in orders.iterrows():
-    #     print(row)
+        s = pp_sma.loc[index][0]
+        # skip first iteration due to lack of data
+        if i > 1:
+            # ------------------------------- Buy signal  ---------------------------
+            if s < s_opt and bb < 0.5-bb_opt and m < -m_opt and current_holdings < max_position:
+                orders.loc[index]['order type'] = 'buy'
+                # actual position
+                if current_holdings == 0:
+                    orders.loc[index]['position'] = 1000
+                    orders.loc[index][symbol] = 1000
+                # order
+                else:
+                    orders.loc[index]['position'] = 2000
+                    orders.loc[index][symbol] = 2000
+                current_holdings = 1000
+            # ------------------------------- Sell signal  ---------------------------
+            elif s > s_opt and bb > 0.5 + bb_opt and m < m_opt and current_holdings > -max_position:
+                orders.loc[index]['order type'] = 'sell'
+                if current_holdings == 0:
+                    orders.loc[index]['position'] = 1000
+                    orders.loc[index][symbol] = -1000
+                else:
+                    orders.loc[index]['position'] = 2000
+                    orders.loc[index][symbol] = -2000
+                current_holdings = -1000
+        i += 1
     orders_df = orders.copy().drop(columns=['order type', 'position'])
-    manual = ms.compute_portvals(orders_df, sd, ed, symbol, sv, commission, impact)
-    # generate_plot(manual, manual)
-    return manual
+    return orders_df
 
 
 def normalize_df(df):
     return df / df.iloc[0, :]
 
 
-def generate_plot(optimal, benchmark):
+def generate_plot(manual, benchmark, trades, symbol, in_sample=True):
+    alpha = 0.7
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.plot(normalize_df(optimal), color='red')
+    ax.plot(normalize_df(manual), color='red')
     ax.plot(normalize_df(benchmark), color='green')
     ax.tick_params(axis='x', rotation=20)
     ax.grid()
     plt.xlabel("Date")
     plt.ylabel("Normalized Portfolio Value")
-    plt.legend(['Optimal', "Benchmark"])
+    plt.legend(['Manual', "Benchmark"])
     plt.title("JPM Theoretically Optimal Trading Strategy vs Benchmark Strategy")
     fig.text(0.5, 0.5, 'Property of Nathan Riojas',
              fontsize=30, color='gray',
              ha='center', va='center', rotation='30', alpha=0.36)
-    plt.savefig("optimal.png")
+    for index, row in trades.iterrows():
+        if trades.loc[index][symbol] > 0:
+            ax.axvline(x=index, color='b', linestyle='-', alpha=alpha)
+        elif trades.loc[index][symbol] < 0:
+            ax.axvline(x=index, color='k', linestyle='-', alpha=alpha)
+    if in_sample:
+        plt.title("JPM In Sample Manual Strategy vs Benchmark Strategy")
+        plot_name = "JPMinSample.png"
+    else:
+        plt.title("JPM Out of Sample Manual Strategy vs Benchmark Strategy")
+        plot_name = "JPMoutSample.png"
+    plt.savefig(plot_name)
 
 
 def get_benchmark(symbol='AAPL', sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000,
@@ -135,7 +131,7 @@ def analyze_portfolios(p1, p2):
     c1 = cumulative_return(normalize_df(p1))
     c2 = cumulative_return(normalize_df(p2))
     print('cumulative return')
-    print("portfolio 1: ", c1, " portfolio 2:", c2)
+    print("portfolio 1: ", c1, " portfolio 2:", c2, " difference ", c1 - c2)
 
     d1 = daily_returns(normalize_df(p1))
     d2 = daily_returns(normalize_df(p2))
@@ -147,15 +143,30 @@ def analyze_portfolios(p1, p2):
     m2 = d2.mean()
     print('mean')
     print("portfolio 1: ", m1[0], " portfolio 2:", m2[0])
+    return c1 - c2
 
 
-def run():
-    get_benchmark()
-
-# testing stock symbols AAPL, SINE_FAST_NOISE, ML4T-220, UNH, JPL
+# Using this to generate plots for manual strategy vs benchmark
 if __name__ == "__main__":
-    symbol = "UNH"
-    m = testPolicy(symbol=symbol)
-    b = get_benchmark(symbol=symbol)
-    generate_plot(m, b)
-    analyze_portfolios(m, b)
+    commission = 9.95  # specified on project page
+    impact = 0.005  # specified on project page
+    sv = 100000
+    s = "JPM"
+    samples = [True, False]
+    # generate plots and data for in sample and out of sample
+    for in_sample in samples:
+        # manual.columns = [symbol]
+        # print(manual)
+        if in_sample:
+            sd = dt.datetime(2008, 1, 1)
+            ed = dt.datetime(2009, 12, 31)
+        else:
+            sd = dt.datetime(2010, 1, 1)
+            ed = dt.datetime(2011, 12, 31)
+        manual = testPolicy(symbol=s, sd=sd, ed=ed)
+        m = ms.compute_portvals(manual, sd, ed, s, sv, commission, impact)
+        m.columns = [s]
+        b = get_benchmark(symbol=s, sd=sd, ed=ed)
+        generate_plot(m, b, manual, s, in_sample)
+        c = analyze_portfolios(m, b)
+
