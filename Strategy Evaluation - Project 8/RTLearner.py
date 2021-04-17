@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy import stats
 
 
 class RTLearner:
@@ -53,7 +54,7 @@ class RTLearner:
         data[:] = d
         # find the initial best index
         i = np.random.randint(data.shape[1] - 2)
-        SplitVal = np.median(data[:, i])
+        SplitVal = stats.mode(data[:, i])[0][0]
         return i, SplitVal
 
     def rand_col(self, data, omit_cols=[]) ->int:
@@ -65,7 +66,7 @@ class RTLearner:
             i = np.random.randint(low=min_num, high=max_num)
         return i
 
-    # check if the median of data is able to split data adequately
+    # check if the mode of data is able to split data adequately
     def no_split(self, data, i, SplitVal) -> bool:
         ltd = data[data[:, i] <= SplitVal].shape[0]
         rtd = data[data[:, i] > SplitVal].shape[0]

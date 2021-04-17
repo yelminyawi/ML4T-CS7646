@@ -67,94 +67,94 @@ StrategyTestCase = namedtuple(
     ],  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 )  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 strategy_test_cases = [  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    StrategyTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="ML4T-220",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        insample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="ML4T-220",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2008, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2009, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outsample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="ML4T-220",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2010, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2011, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark_type="clean",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark=1.0,  # benchmark updated Apr 24 2017  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        impact=0.0,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        train_time=25,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        test_time=5,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        max_time=60,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    StrategyTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="AAPL",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        insample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="AAPL",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2008, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2009, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outsample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="AAPL",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2010, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2011, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark_type="stock",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark=0.1581999999999999,  # benchmark computed Nov 22 2017  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        impact=0.0,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        train_time=25,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        test_time=5,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        max_time=60,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    StrategyTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="SINE_FAST_NOISE",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        insample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="SINE_FAST_NOISE",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2008, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2009, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outsample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="SINE_FAST_NOISE",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2010, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2011, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark_type="noisy",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark=2.0,  # benchmark updated Apr 24 2017  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        impact=0.0,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        train_time=25,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        test_time=5,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        max_time=60,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    StrategyTestCase(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        description="UNH - In sample",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        insample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="UNH",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2008, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2009, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        outsample_args=dict(  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            symbol="UNH",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sd=dt.datetime(2010, 1, 1),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            ed=dt.datetime(2011, 12, 31),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            sv=100000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark_type="stock",  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        benchmark=-0.25239999999999996,  # benchmark computed Nov 22 2017  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        impact=0.0,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        train_time=25,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        test_time=5,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        max_time=60,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        seed=1481090000,  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    ),  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    StrategyTestCase(
+        description="ML4T-220",
+        insample_args=dict(
+            symbol="ML4T-220",
+            sd=dt.datetime(2008, 1, 1),
+            ed=dt.datetime(2009, 12, 31),
+            sv=100000,
+        ),
+        outsample_args=dict(
+            symbol="ML4T-220",
+            sd=dt.datetime(2010, 1, 1),
+            ed=dt.datetime(2011, 12, 31),
+            sv=100000,
+        ),
+        benchmark_type="clean",
+        benchmark=1.0,  # benchmark updated Apr 24 2017
+        impact=0.0,
+        train_time=25,
+        test_time=5,
+        max_time=60,
+        seed=1481090000,
+    ),
+    StrategyTestCase(
+        description="AAPL",
+        insample_args=dict(
+            symbol="AAPL",
+            sd=dt.datetime(2008, 1, 1),
+            ed=dt.datetime(2009, 12, 31),
+            sv=100000,
+        ),
+        outsample_args=dict(
+            symbol="AAPL",
+            sd=dt.datetime(2010, 1, 1),
+            ed=dt.datetime(2011, 12, 31),
+            sv=100000,
+        ),
+        benchmark_type="stock",
+        benchmark=0.1581999999999999,  # benchmark computed Nov 22 2017
+        impact=0.0,
+        train_time=25,
+        test_time=5,
+        max_time=60,
+        seed=1481090000,
+    ),
+    StrategyTestCase(
+        description="SINE_FAST_NOISE",
+        insample_args=dict(
+            symbol="SINE_FAST_NOISE",
+            sd=dt.datetime(2008, 1, 1),
+            ed=dt.datetime(2009, 12, 31),
+            sv=100000,
+        ),
+        outsample_args=dict(
+            symbol="SINE_FAST_NOISE",
+            sd=dt.datetime(2010, 1, 1),
+            ed=dt.datetime(2011, 12, 31),
+            sv=100000,
+        ),
+        benchmark_type="noisy",
+        benchmark=2.0,  # benchmark updated Apr 24 2017
+        impact=0.0,
+        train_time=25,
+        test_time=5,
+        max_time=60,
+        seed=1481090000,
+    ),
+    StrategyTestCase(
+        description="UNH - In sample",
+        insample_args=dict(
+            symbol="UNH",
+            sd=dt.datetime(2008, 1, 1),
+            ed=dt.datetime(2009, 12, 31),
+            sv=100000,
+        ),
+        outsample_args=dict(
+            symbol="UNH",
+            sd=dt.datetime(2010, 1, 1),
+            ed=dt.datetime(2011, 12, 31),
+            sv=100000,
+        ),
+        benchmark_type="stock",
+        benchmark=-0.25239999999999996,  # benchmark computed Nov 22 2017
+        impact=0.0,
+        train_time=25,
+        test_time=5,
+        max_time=60,
+        seed=1481090000,
+    ),
 ]  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 max_points = 60.0  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			

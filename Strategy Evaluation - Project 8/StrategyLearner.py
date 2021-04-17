@@ -23,21 +23,23 @@ GT honor code violation.
 -----do not edit anything above this line---  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
   		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 Student Name: Tucker Balch (replace with your name)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-GT User ID: tb34 (replace with your User ID)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+GT User ID: nriojas3 (replace with your User ID)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 GT ID: 900897987 (replace with your GT ID)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 """
 
 import datetime as dt
 import random
-
+import numpy as np
 import pandas as pd
 import util as ut
+import indicators as ind
+import RTLearner as rt
+import BagLearner as bl
 
 
 class StrategyLearner(object):
     """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    A strategy learner that can learn a trading policy using the same indicators used in ManualStrategy.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    A strategy learner that can learn a trading policy using the same indicators used in ManualStrategy.
     :param verbose: If “verbose” is True, your code can print out information for debugging.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         If verbose = False your code should not generate ANY output.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     :type verbose: bool  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -47,7 +49,6 @@ class StrategyLearner(object):
     :type commission: float  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
     """
 
-    # constructor
     def __init__(self, verbose=False, impact=0.0, commission=0.0):
         """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
         Constructor method  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
@@ -55,112 +56,116 @@ class StrategyLearner(object):
         self.verbose = verbose
         self.impact = impact
         self.commission = commission
+        self.leaf_size = 8
+        self.learner = bl.BagLearner(learner=rt.RTLearner, kwargs={"leaf_size": self.leaf_size}, bags=20)
+        self.look_back = 2
+        self.testing_window = 5
+        self.return_min = .02
 
     def author(self):
         return 'nriojas3'
 
-    # this method should create a QLearner, and train it for trading  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    def add_evidence(
-            self,
-            symbol="IBM",
-            sd=dt.datetime(2008, 1, 1),
-            ed=dt.datetime(2009, 1, 1),
-            sv=10000,
-    ):
-        """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        Trains your strategy learner over a given time frame.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param symbol: The stock symbol to train on  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type symbol: str  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param sd: A datetime object that represents the start date, defaults to 1/1/2008  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type sd: datetime  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param ed: A datetime object that represents the end date, defaults to 1/1/2009  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type ed: datetime  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param sv: The starting value of the portfolio  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type sv: int  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        """
+    # creates features dataframe for x train and test
+    def generate_features_df(self, price_df):
+        # get indicators and rename columns to indicator name
+        std = ind.calculate_std(price_df, self.look_back)
+        sma = ind.calculate_sma(price_df, self.look_back)
+        pp_sma = ind.calculate_price_per_sma(price_df, sma)
+        pp_sma.columns = ['SMA']
+        momentum = ind.calculate_momentum(price_df, self.look_back)
+        momentum.columns = ['Momentum']
+        bbp, top_band, bottom_band = ind.calculate_BB_data(price_df, self.look_back, sma, std)
+        bbp.columns = ['BBP']
+        features = pd.concat((pp_sma, momentum, bbp), axis=1)
+        return features
 
-        # add your code to do learning here  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-
-        # example usage of the old backward compatible util function  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+    # creates a dataframe of stock prices over a specified start and end date
+    def generate_prices_df(self, symbol, sd, ed):
         syms = [symbol]
         dates = pd.date_range(sd, ed)
-        prices_all = ut.get_data(syms,
-                                 dates)  # automatically adds SPY
-        prices = prices_all[
-            syms]  # only portfolio symbols
-        prices_SPY = prices_all[
-            "SPY"]  # only SPY, for comparison later
-        if self.verbose:
-            print(prices)
+        prices_all = ut.get_data(syms, dates)  # automatically adds SPY
+        prices = prices_all[syms]  # only portfolio symbols
+        return prices
 
-        # example use with new colname  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        volume_all = ut.get_data(
-            syms, dates, colname="Volume"
-        )  # automatically adds SPY  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        volume = volume_all[
-            syms]  # only portfolio symbols
-        volume_SPY = volume_all[
-            "SPY"]  # only SPY, for comparison later
-        if self.verbose:
-            print(volume)
+    def add_evidence(self, symbol="IBM", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2009, 1, 1), sv=10000, ):
+        # ------------------ generate dataframe of prices for stock -----------------------------
+        prices = self.generate_prices_df(symbol, sd, ed)
 
-    # this method should use the existing policy and test it against new data  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    def testPolicy(
-            self,
-            symbol="IBM",
-            sd=dt.datetime(2009, 1, 1),
-            ed=dt.datetime(2010, 1, 1),
-            sv=10000,
-    ):
-        """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        Tests your learner using data outside of the training data  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param symbol: The stock symbol that you trained on on  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type symbol: str  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param sd: A datetime object that represents the start date, defaults to 1/1/2008  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type sd: datetime  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param ed: A datetime object that represents the end date, defaults to 1/1/2009  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type ed: datetime  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :param sv: The starting value of the portfolio  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :type sv: int  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :return: A DataFrame with values representing trades for each day. Legal values are +1000.0 indicating  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            a BUY of 1000 shares, -1000.0 indicating a SELL of 1000 shares, and 0.0 indicating NOTHING.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            Values of +2000 and -2000 for trades are also legal when switching from long to short or short to  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-            long so long as net holdings are constrained to -1000, 0, and 1000.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        :rtype: pandas.DataFrame  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        """
+        # ------------------ generate a train x dataframe using the indicators as features -------
+        train_x = self.generate_features_df(prices)
+        train_x = train_x[:-self.testing_window]
 
-        # here we build a fake set of trades  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        # your code should return the same sort of data  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        dates = pd.date_range(sd, ed)
-        prices_all = ut.get_data([symbol],
-                                 dates)  # automatically adds SPY
-        trades = prices_all[
-            [symbol, ]]  # only portfolio symbols
-        trades_SPY = prices_all[
-            "SPY"]  # only SPY, for comparison later
-        trades.values[:,
-        :] = 0  # set them all to nothing
-        trades.values[0,
-        :] = 1000  # add a BUY at the start
-        trades.values[40, :] = -1000  # add a SELL  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        trades.values[41, :] = 1000  # add a BUY  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        trades.values[60,
-        :] = -2000  # go short from long
-        trades.values[61,
-        :] = 2000  # go long from short
-        trades.values[-1,
-        :] = -1000  # exit on the last day
-        if self.verbose:
-            print(type(
-                trades))  # it better be a DataFrame!
-        if self.verbose:
-            print(trades)
-        if self.verbose:
-            print(prices_all)
+        # ---------- create the train y dataframe based on the future window specified -----------
+        train_y = prices.copy() * 0
+        train_y = train_y[:-self.testing_window]
+
+        for i in range(len(prices) - self.testing_window):
+            return_during_window = (prices.iloc[i + self.testing_window, :] / prices.iloc[i, :]) - 1
+            # Long
+            if return_during_window[0] > (self.return_min + self.impact):
+                train_y.iloc[i, :] = 1
+            # Short
+            elif return_during_window[0] < (-self.return_min - self.impact):
+                train_y.iloc[i, :] = -1
+            # Cash
+            else:
+                train_y.iloc[i, :] = 0
+
+        # ----------------------------- train the learner ----------------------------------------
+        self.learner.add_evidence(train_x.values, train_y.values)
+
+    def testPolicy(self, symbol="IBM", sd=dt.datetime(2009, 1, 1), ed=dt.datetime(2010, 1, 1), sv=10000):
+        # --------------------- generate dataframe of prices for stock ---------------------------
+        prices = self.generate_prices_df(symbol, sd, ed)
+
+        # ------------- generate a train x dataframe using the indicators as features ------------
+        test_x = self.generate_features_df(prices)
+        test_x = test_x[:]
+
+        # ----------------------- generate test y data by querying learner -----------------------
+        test_y = self.learner.query(test_x.values)
+
+        # ----------------------------- create trades dataframe ----------------------------------
+        trades = prices.copy() * 0
+        current_holdings = 0
+        for i in range(len(trades)):
+            # to do when long position -------------------------------
+            if current_holdings == 1:
+                # short signal
+                if test_y[i] < 0:
+                    trades.iloc[i, :] = -2000
+                    current_holdings = -1
+                # cash signal
+                elif test_y[i] == 0:
+                    trades.iloc[i, :] = -1000
+                    current_holdings = 0
+            # to do when short position --------------------------------
+            elif current_holdings == -1:
+                # long signal
+                if test_y[i] > 0:
+                    trades.iloc[i, :] = 2000
+                    current_holdings = 1
+                # cash signal
+                elif test_y[i] == 0:
+                    trades.iloc[i, :] = 1000
+                    current_holdings = 0
+            # to do when in cash position ----------------------------
+            elif current_holdings == 0:
+                # long signal
+                if test_y[i] > 0:
+                    trades.iloc[i, :] = 1000
+                    current_holdings = 1
+                # short signal
+                elif test_y[i] < 0:
+                    trades.iloc[i, :] = -1000
+                    current_holdings = -1
+
         return trades
 
 
 if __name__ == "__main__":
     print("One does not simply think up a strategy")
+    st = StrategyLearner()
+
+    st.add_evidence(symbol="AAPL",sd=dt.datetime(2008,1,1),ed=dt.datetime(2009,12,31),sv=100000)
+    st.testPolicy(symbol="AAPL",sd=dt.datetime(2010,1,1),ed=dt.datetime(2011,12,31),sv=100000)
