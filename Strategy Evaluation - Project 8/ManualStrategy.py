@@ -1,11 +1,8 @@
-import marketsim as ms
+import marketsimcode as ms
 import indicators as ind
-from util import get_data, plot_data
-import time
+from util import get_data
 import datetime as dt
-import numpy as np
 import pandas as pd
-import copy
 import matplotlib.pyplot as plt
 
 # to optimize everything at once
@@ -44,7 +41,7 @@ def testPolicy(symbol="AAPL", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 1
         bb = bbp.loc[index][0]
         s = pp_sma.loc[index][0]
         # skip first iteration due to lack of data
-        if i > 1:
+        if i > look_back:
             # ------------------------------- Buy signal  ---------------------------
             if s < s_opt and bb < 0.5-bb_opt and m < -m_opt and current_holdings < max_position:
                 orders.loc[index]['order type'] = 'buy'
@@ -95,6 +92,7 @@ def generate_plot(manual, benchmark, trades, symbol, in_sample=True):
             ax.axvline(x=index, color='b', linestyle='-', alpha=alpha)
         elif trades.loc[index][symbol] < 0:
             ax.axvline(x=index, color='k', linestyle='-', alpha=alpha)
+    plt.legend(['Manual', "Benchmark", "Short", "Long"])
     if in_sample:
         plt.title("JPM In Sample Manual Strategy vs Benchmark Strategy")
         plot_name = "JPMinSample.png"
@@ -147,6 +145,24 @@ def analyze_portfolios(p1, p2):
 
 
 # Using this to generate plots for manual strategy vs benchmark
+def generate_manual_plots(s='JPM', commission=9.95, impact=0.005, sv=100000):
+    samples = [True, False]
+    # generate plots and data for in sample and out of sample
+    for in_sample in samples:
+        if in_sample:
+            sd = dt.datetime(2008, 1, 1)
+            ed = dt.datetime(2009, 12, 31)
+        else:
+            sd = dt.datetime(2010, 1, 1)
+            ed = dt.datetime(2011, 12, 31)
+        manual = testPolicy(symbol=s, sd=sd, ed=ed)
+        m = ms.compute_portvals(manual, sd, ed, s, sv, commission, impact)
+        m.columns = [s]
+        b = get_benchmark(symbol=s, sd=sd, ed=ed)
+        generate_plot(m, b, manual, s, in_sample)
+
+
+# Using this to generate plots for manual strategy vs benchmark
 if __name__ == "__main__":
     commission = 9.95  # specified on project page
     impact = 0.005  # specified on project page
@@ -169,4 +185,6 @@ if __name__ == "__main__":
         b = get_benchmark(symbol=s, sd=sd, ed=ed)
         generate_plot(m, b, manual, s, in_sample)
         c = analyze_portfolios(m, b)
+
+
 

@@ -1,35 +1,33 @@
 """"""
 """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 Template for implementing StrategyLearner  (c) 2016 Tucker Balch  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
 Copyright 2018, Georgia Institute of Technology (Georgia Tech)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 Atlanta, Georgia 30332  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 All Rights Reserved  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
 Template code for CS 4646/7646  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
 Georgia Tech asserts copyright ownership of this template and all derivative  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 works, including solutions to the projects assigned in this course. Students  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 and other users of this template code are advised not to share it with others  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 or to make it available on publicly viewable websites including repositories  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 such as github and gitlab.  This copyright statement should not be removed  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 or edited.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
 We do grant permission to share solutions privately with non-students such  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 as potential employers. However, sharing with other current or future  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 students of CS 7646 is prohibited and subject to being investigated as a  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 GT honor code violation.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
 -----do not edit anything above this line---  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-Student Name: Tucker Balch (replace with your name)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-GT User ID: nriojas3 (replace with your User ID)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-GT ID: 900897987 (replace with your GT ID)  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+
+Student Name: Nathan Riojas 	  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+GT User ID: nriojas3  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
+GT ID: 903646605 		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
 """
 
 import datetime as dt
-import random
-import numpy as np
 import pandas as pd
 import util as ut
 import indicators as ind
@@ -38,29 +36,18 @@ import BagLearner as bl
 
 
 class StrategyLearner(object):
-    """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    A strategy learner that can learn a trading policy using the same indicators used in ManualStrategy.
-    :param verbose: If “verbose” is True, your code can print out information for debugging.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        If verbose = False your code should not generate ANY output.  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    :type verbose: bool  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    :param impact: The market impact of each transaction, defaults to 0.0  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    :type impact: float  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    :param commission: The commission amount charged, defaults to 0.0  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    :type commission: float  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-    """
-
     def __init__(self, verbose=False, impact=0.0, commission=0.0):
-        """  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        Constructor method  		  	   		   	 			  		 			     			  	  		 	  	 		 			  		  			
-        """
         self.verbose = verbose
         self.impact = impact
         self.commission = commission
+        # tune these parameters
         self.leaf_size = 8
-        self.learner = bl.BagLearner(learner=rt.RTLearner, kwargs={"leaf_size": self.leaf_size}, bags=20)
-        self.look_back = 2
-        self.testing_window = 5
-        self.return_min = .02
+        self.look_back = 5
+        self.testing_window = self.look_back
+        self.return_min = .03
+        self.bags = 20
+        # create the learner
+        self.learner = bl.BagLearner(learner=rt.RTLearner, kwargs={"leaf_size": self.leaf_size}, bags=self.bags)
 
     def author(self):
         return 'nriojas3'
@@ -76,6 +63,7 @@ class StrategyLearner(object):
         momentum.columns = ['Momentum']
         bbp, top_band, bottom_band = ind.calculate_BB_data(price_df, self.look_back, sma, std)
         bbp.columns = ['BBP']
+        # concatenate to create a single x dataframe filled with features
         features = pd.concat((pp_sma, momentum, bbp), axis=1)
         return features
 
@@ -87,7 +75,7 @@ class StrategyLearner(object):
         prices = prices_all[syms]  # only portfolio symbols
         return prices
 
-    def add_evidence(self, symbol="IBM", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2009, 1, 1), sv=10000, ):
+    def add_evidence(self, symbol="IBM", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2009, 1, 1), sv=10000):
         # ------------------ generate dataframe of prices for stock -----------------------------
         prices = self.generate_prices_df(symbol, sd, ed)
 
@@ -100,6 +88,7 @@ class StrategyLearner(object):
         train_y = train_y[:-self.testing_window]
 
         for i in range(len(prices) - self.testing_window):
+            # cumulative return for the window
             return_during_window = (prices.iloc[i + self.testing_window, :] / prices.iloc[i, :]) - 1
             # Long
             if return_during_window[0] > (self.return_min + self.impact):
@@ -110,7 +99,6 @@ class StrategyLearner(object):
             # Cash
             else:
                 train_y.iloc[i, :] = 0
-
         # ----------------------------- train the learner ----------------------------------------
         self.learner.add_evidence(train_x.values, train_y.values)
 
@@ -129,43 +117,30 @@ class StrategyLearner(object):
         trades = prices.copy() * 0
         current_holdings = 0
         for i in range(len(trades)):
-            # to do when long position -------------------------------
-            if current_holdings == 1:
-                # short signal
-                if test_y[i] < 0:
-                    trades.iloc[i, :] = -2000
-                    current_holdings = -1
-                # cash signal
-                elif test_y[i] == 0:
-                    trades.iloc[i, :] = -1000
-                    current_holdings = 0
-            # to do when short position --------------------------------
-            elif current_holdings == -1:
-                # long signal
-                if test_y[i] > 0:
+            # Long signal
+            if test_y[i] > 0:
+                if current_holdings == -1:
                     trades.iloc[i, :] = 2000
-                    current_holdings = 1
-                # cash signal
-                elif test_y[i] == 0:
+                elif current_holdings == 0:
                     trades.iloc[i, :] = 1000
-                    current_holdings = 0
-            # to do when in cash position ----------------------------
-            elif current_holdings == 0:
-                # long signal
-                if test_y[i] > 0:
-                    trades.iloc[i, :] = 1000
-                    current_holdings = 1
-                # short signal
-                elif test_y[i] < 0:
+                current_holdings = 1
+            # Short signal
+            elif test_y[i] < 0:
+                if current_holdings == 1:
+                    trades.iloc[i, :] = -2000
+                elif current_holdings == 0:
                     trades.iloc[i, :] = -1000
-                    current_holdings = -1
+                current_holdings = -1
+            # Cash signal
+            elif test_y[i] == 0:
+                if current_holdings == -1:
+                    trades.iloc[i, :] = 1000
+                elif current_holdings == 1:
+                    trades.iloc[i, :] = -1000
+                current_holdings = 0
 
         return trades
 
 
 if __name__ == "__main__":
     print("One does not simply think up a strategy")
-    st = StrategyLearner()
-
-    st.add_evidence(symbol="AAPL",sd=dt.datetime(2008,1,1),ed=dt.datetime(2009,12,31),sv=100000)
-    st.testPolicy(symbol="AAPL",sd=dt.datetime(2010,1,1),ed=dt.datetime(2011,12,31),sv=100000)
